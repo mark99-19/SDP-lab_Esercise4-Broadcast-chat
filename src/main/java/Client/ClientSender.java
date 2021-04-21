@@ -26,6 +26,15 @@ public class ClientSender extends Thread {
             try {
                 input = userInput.readLine();
                 this.outToServer.writeBytes(input + "\n");
+
+                if(input.compareToIgnoreCase("exit") == 0) {
+                    System.out.printf("[%d] Disconnessione richiesta.\n", this.getId());
+                    this.connection.close();
+                    System.out.printf("[%d] Client socket chiusa %s",
+                            this.getId(),
+                            this.connection.isClosed());
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
