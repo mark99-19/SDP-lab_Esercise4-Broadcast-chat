@@ -1,14 +1,14 @@
 package Client;
 
-import Client.ClientReceiver;
-import Client.ClientSender;
+import Server.Queue;
 
 import java.net.Socket;
 
 
-public class MultiClient extends Thread{
+public class MultiClient {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception
+    {
 
         String serversAddress = "localhost";
         int serverPort = 6789;

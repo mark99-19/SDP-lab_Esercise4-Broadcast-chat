@@ -1,14 +1,9 @@
-package Orchestrator;
+package Server;
 
 import java.util.ArrayList;
 
 public class Queue {
-    private ArrayList<String> buffer;
-
-    public Queue()
-    {
-        this.buffer = new ArrayList<String>();
-    }
+    public ArrayList<String> buffer = new ArrayList<String>();
 
     public synchronized void put(String message)
     {
@@ -16,19 +11,19 @@ public class Queue {
         notify();
     }
 
-    public synchronized String get()
+    public synchronized String take()
     {
         String message = null;
 
-        while (buffer.size() <= 0) {
+        while(buffer.size() == 0){
             try {
-               wait();
-            } catch (InterruptedException e) {
+                wait();
+            } catch (InterruptedException e){
                 e.printStackTrace();
             }
         }
 
-        if(buffer.size() > 0) {
+        if(buffer.size() > 0){
             message = buffer.get(0);
             buffer.remove(0);
         }

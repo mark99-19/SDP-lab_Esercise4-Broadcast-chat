@@ -5,27 +5,29 @@ import java.io.*;
 
 public class ClientReceiver extends Thread {
 
-    private final Socket socket;
-    private final DataOutputStream outToClient;
     private final BufferedReader inFromServer;
+    private final Socket connection;
 
-    //TODO: servono entrambi gli stream?
 
     protected ClientReceiver(Socket socket) throws Exception
     {
-        this.socket = socket;
-        this.outToClient = new DataOutputStream(this.socket.getOutputStream());
         this.inFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        this.connection = socket;
     }
+
 
     public void run()
     {
-        String message;
-        while(true)
-        {
+        String message = "";
+        while(!this.connection.isClosed()) {
             try {
-                message = inFromServer.readLine();
-                System.out.printf("[Client %d] Ricevuto un messaggio: %s",
+                /*
+                TODO: abbiamo vinto la battaglia ma non la guerra:
+                 è necessario mettere qualcosa che non faccia crashare la readline!
+                 (abbiamo già visto "Socket socket.wait()")
+                */
+                message = this.inFromServer.readLine();
+                System.out.printf("[Client %d] Ricevuto un messaggio: %s\n",
                         this.getId(), message);
             } catch(Exception e) {
                 e.printStackTrace();
